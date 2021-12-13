@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.24.0",
     "classnames": "^2.2.6",
     "normalize.css": "^8.0.1",
     "react": "^16.9.0",
@@ -18,7 +19,6 @@
     "build-storybook": "build-storybook -s public"
   },
   "proxy": "http://localhost:8001",
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -49,7 +49,4 @@
       "<rootDir>/.git/"
     ]
   }
-  
-
-
 }
