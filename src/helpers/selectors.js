@@ -7,12 +7,11 @@ export function getAppointmentsForDay(state, day) {
        appointmentForDay.push(state.appointments[appointment])
      }
    }
-
  }
 return appointmentForDay
 }
 
-export function getInterview (state,interview){
+export function getInterview(state,interview){
 if(interview){
 const interviewerId = interview.interviewer
 const parsedInterview = {};
@@ -25,4 +24,14 @@ return null;
 }
 
 
-
+export function getInterviewersForDay(state, day) {
+  const parsedInterviewers = [];
+  for(let elem of state.days){
+    if(elem.name === day){
+      for(let interviewer of elem.interviewers ){
+        parsedInterviewers.push(state.interviewers[interviewer])
+      }
+    }
+  }
+ return parsedInterviewers
+}
