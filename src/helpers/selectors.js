@@ -10,8 +10,19 @@ export function getAppointmentsForDay(state, day) {
 
  }
 return appointmentForDay
-
-
 }
 
-// console.log(getAppointmentsForDay(state,"Monday"))
+export function getInterview (state,interview){
+if(interview){
+const interviewerId = interview.interviewer
+const parsedInterview = {};
+parsedInterview.student = interview.student;
+parsedInterview.interviewer = state.interviewers[interviewerId]
+
+return parsedInterview
+}
+return null;
+}
+
+
+
