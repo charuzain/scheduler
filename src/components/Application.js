@@ -16,9 +16,7 @@ export default function Application(props) {
     interviewers:{}
   })
   const setDay = day => setState({ ...state, day });
-  // const setDays = days => setState(prev => ({ ...prev, days }));
   const dailyAppointments = getAppointmentsForDay(state, state.day)
-  // const dailyInterviewers=  getInterviewersForDay(state, state.day)
   
   function bookInterview(id, interview) {
     const appointment = {
@@ -29,7 +27,6 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    // setState({ ...state, appointments })
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
         setState({ ...state, appointments })
@@ -40,8 +37,8 @@ export default function Application(props) {
     })
   }
 
+
   function cancelInterview(id){
-    // console.log(state.appointments)
     const appointment ={
       ...state.appointments[id] , 
       interview: null
@@ -50,18 +47,13 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     }
-    // setState({ ...state, appointments })
     return axios.delete(`/api/appointments/${id}`)
       .then(() => {
         setState({ ...state, appointments })
       })
-
       .catch((err) => {
         console.log(err)
       })
-
-
-    // console.log(id, interview)
   }
 
 
@@ -102,16 +94,19 @@ export default function Application(props) {
           const interviewers = getInterviewersForDay(state, state.day)
         return(
         <Appointment key={appointment.id}
-         id={appointment.id}
-         time={appointment.time}
-         interview={interview}
-        interviewers={interviewers}
-        bookInterview={bookInterview}
-        cancelInterview={cancelInterview}/>)})}
+                     id={appointment.id}
+                     time={appointment.time}
+                     interview={interview}
+                     interviewers={interviewers}
+                     bookInterview={bookInterview}
+                     cancelInterview={cancelInterview}
+                     
+        />)})}
         <Appointment key="last" 
                      time="5pm"
-                    bookInterview={bookInterview}
-                    cancelInterview={cancelInterview} />
+                    //  bookInterview={bookInterview}
+                    //  cancelInterview={cancelInterview}
+                     />
       </section>
     </main>
   );
