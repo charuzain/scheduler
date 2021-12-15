@@ -1,4 +1,3 @@
-
 export function getAppointmentsForDay(state, day) {
  const appointmentForDay =[];
  for(let elem of state.days){
@@ -13,12 +12,11 @@ return appointmentForDay
 
 export function getInterview(state,interview){
 if(interview){
-const interviewerId = interview.interviewer
-const parsedInterview = {};
-parsedInterview.student = interview.student;
-parsedInterview.interviewer = state.interviewers[interviewerId]
-
-return parsedInterview
+  const interviewerId = interview.interviewer
+  const parsedInterview = {};
+  parsedInterview.student = interview.student;
+  parsedInterview.interviewer = state.interviewers[interviewerId]
+  return parsedInterview
 }
 return null;
 }
