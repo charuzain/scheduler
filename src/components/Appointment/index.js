@@ -6,14 +6,16 @@ import Empty from './Empty';
 import './style.scss';
 import Form from './Form';
 import Status from './Status';
+import Confirm from './Confirm';
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const DELETING = "DELETING";
+const CONFIRM = "CONFIRM"
 
 export default function Appointment(props) {
-  console.log(props)
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -30,7 +32,19 @@ export default function Appointment(props) {
     })
   }
 
-  // function delete(){}
+  function deleteConfirm(){
+    transition(CONFIRM)
+  }
+
+  function deleteAppointment(){ 
+   
+    transition(DELETING)
+    props.cancelInterview(props.id)
+        .then(()=>{
+          transition(EMPTY)
+        })
+    
+  }
 
   return (
     
@@ -42,9 +56,16 @@ export default function Appointment(props) {
                                   onSave={save}
                                   
                                   />}
-      {mode === SHOW && <Show student={props.interview.student}
-        interviewer={props.interview.interviewer}/>}
+        {mode === SHOW &&  <Show student={props.interview.student}
+                             interviewer={props.interview.interviewer}
+                             onDelete={deleteConfirm}
+                            //  onEdit={}
+                             />}
         {mode === SAVING && <Status message = {SAVING}/>}
+        {mode === CONFIRM && <Confirm message="Are you sure you would like to delete"
+                                      onConfirm={deleteAppointment}
+                                      onCancel={()=>back()}/>}
+       {mode === DELETING && <Status message={DELETING} />}
       {/* {props.interview ? <Show {...props.interview}/> : <Empty />} */}
       {/* <article className="appointment">
         {
