@@ -25,7 +25,7 @@ const useVisualMode =(initialMode)=>{
 
 
 
- return {mode, transition,back }
+ return {mode, transition, back }
 
 
 }
