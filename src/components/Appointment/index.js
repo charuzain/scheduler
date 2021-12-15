@@ -32,7 +32,7 @@ export default function Appointment(props) {
     })
   }
 
-  function deleteConfirm(){
+  function deleteConfirmation(){
     transition(CONFIRM)
   }
 
@@ -58,7 +58,7 @@ export default function Appointment(props) {
                                   />}
         {mode === SHOW &&  <Show student={props.interview.student}
                              interviewer={props.interview.interviewer}
-                             onDelete={deleteConfirm}
+                             onDelete={deleteConfirmation}
                             //  onEdit={}
                              />}
         {mode === SAVING && <Status message = {SAVING}/>}
