@@ -7,6 +7,7 @@ import './style.scss';
 import Form from './Form';
 import Status from './Status';
 import Confirm from './Confirm';
+import Error from './Error';
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -15,6 +16,8 @@ const SAVING = "SAVING";
 const DELETING = "DELETING";
 const CONFIRM = "CONFIRM"
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = " ERROR_DELETE"
 
 export default function Appointment(props) {
   console.log(props)
@@ -26,29 +29,27 @@ export default function Appointment(props) {
     const interview = {
       student: name,
       interviewer
-    };
-     transition(SAVING)
+      };
+     transition(SAVING);
 
-    props.bookInterview(props.id,interview).then(()=>{
-      transition(SHOW)
-    })
+    props.bookInterview(props.id,interview)
+    .then(()=>{transition(SHOW)})
+    .catch(error=>transition(ERROR_SAVE, true));
   }
 
   function edit(){
   transition(EDIT)
   }
 
-
   function deleteConfirmation(){
     transition(CONFIRM)
   }
 
   function deleteAppointment(){ 
-    transition(DELETING)
+    transition(DELETING , true)
     props.cancelInterview(props.id)
-        .then(()=>{
-          transition(EMPTY)
-        })
+      .then(()=>{transition(EMPTY)})
+      .catch(error => transition(ERROR_DELETE,  true));
     
   }
 
@@ -79,14 +80,16 @@ export default function Appointment(props) {
                                       onConfirm={deleteAppointment}
                                       onCancel={()=>back()}/>}
        {mode === DELETING && <Status message={DELETING} />}
+       {mode === ERROR_SAVE  && <Error message = "Could not add appointment"
+                                       onClose={()=>back()}/>}
+
+       {mode === ERROR_DELETE && <Error message = "Could not delete appointment"
+                                        onClose = {()=>back()}/>}
       {/* {props.interview ? <Show {...props.interview}/> : <Empty />} */}
       {/* <article className="appointment">
-        {
-          props.time ? `Appointment at ${props.time}` : "No appointments"
-        }
+        {props.time ? `Appointment at ${props.time}` : "No appointments"}
       </article> */}
     </article> 
   )
 }
-// student = { props.interview.student } interviewer = { props.interview.interviewer }
 
