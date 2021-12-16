@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 
-export default function useApplicationData() {
+const useApplicationData = ()=> {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
   })
-  const setDay = day => setState({ ...state, day });
+  // const setDay = day => setState({ ...state, day });
 
   useEffect(() => {
     Promise.all([
@@ -22,6 +22,7 @@ export default function useApplicationData() {
     })
   }, [])
 
+  const setDay = day => setState(prev => ({ ...prev, day }));
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -32,14 +33,25 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    return axios.put(`/api/appointments/${id}`, appointment)
-      .then(() => {
-        setState({ ...state, appointments })
-      })
+    return axios.put(`/api/appointments/${id}`, {interview})
+      .then(res => {
+        if(state.appointments[id].interview===null){
+          const days = state.days.map(day=>(
+            day.appointments.includes(id) ? {...day , spots:day.spots - 1} :day
+          ));
+          setState(prev=>({...prev , days , appointments}))
+        }
+        else{
+          setState(prev=>({ ...prev, appointments }) )
 
-      .catch((err) => {
-        console.log(err)
-      })
+      }
+      
+    })
+      
+
+      // .catch((err) => {
+      //   console.log(err)
+      // })
   }
 
   function cancelInterview(id) {
@@ -53,16 +65,19 @@ export default function useApplicationData() {
     }
     return axios.delete(`/api/appointments/${id}`)
       .then(() => {
-        setState({ ...state, appointments })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+        const days = state.days.map(day => (
+          day.appointments.includes(id)
+            ? { ...day, spots: day.spots + 1 }
+            : day
+        ));
+        setState(prev => ({ ...prev, days, appointments }));
+      });
     }
 
 
 
-  return (
-  {state , setDay, bookInterview,cancelInterview}
-  )
+  return {state , setDay, bookInterview,cancelInterview}
+  
 }
+
+export default useApplicationData;
