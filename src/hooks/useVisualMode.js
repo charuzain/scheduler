@@ -7,13 +7,14 @@ const useVisualMode =(initialMode)=>{
  const [history, setHistory] = useState([initialMode])
   
   function transition(newMode,replace=false){
+    setMode(newMode)
     if(replace){
-      setMode(newMode)
+        setHistory((prev)=>[...prev.slice(0,-1), newMode]);
     }
     else{
-   setMode(newMode)
-   setHistory([...history,newMode])}
-                }
+      setHistory(prev=>[...prev,newMode])
+  }
+  }
 
  function back(){
    if(history.length > 1){
@@ -21,9 +22,6 @@ const useVisualMode =(initialMode)=>{
     setMode(history[history.length-1])}
 
  }
-
-
-
 
  return {mode, transition, back }
 
