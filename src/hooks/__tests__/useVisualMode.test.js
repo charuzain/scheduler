@@ -1,17 +1,19 @@
-
 import { renderHook, act } from "@testing-library/react-hooks";
 
 import useVisualMode from "hooks/useVisualMode";
 
 const FIRST = "FIRST";
+const SECOND = "SECOND";
+const THIRD = "THIRD";
 
+//---------------------test for Initial mode-----------------------//
 test("useVisualMode should initialize with default value", () => {
   const { result } = renderHook(() => useVisualMode(FIRST));
 
   expect(result.current.mode).toBe(FIRST);
 });
 
-const SECOND = "SECOND";
+//---------------------test for Transition mode-----------------------//
 test("useVisualMode should transition to another mode", () => {
   const { result } = renderHook(() => useVisualMode(FIRST));
 
@@ -19,7 +21,7 @@ test("useVisualMode should transition to another mode", () => {
   expect(result.current.mode).toBe(SECOND);
 });
 
-const THIRD = "THIRD";
+//---------------------test for transition back mode-----------------------//
 test("useVisualMode should return to previous mode", () => {
   const { result } = renderHook(() => useVisualMode(FIRST));
 
@@ -36,13 +38,14 @@ test("useVisualMode should return to previous mode", () => {
   expect(result.current.mode).toBe(FIRST);
 });
 
+//---------------------test for Transition with Replace-----------------------//
 test("useVisualMode should replace the current mode", () => {
   const { result } = renderHook(() => useVisualMode(FIRST));
 
   act(() => result.current.transition(SECOND));
   expect(result.current.mode).toBe(SECOND);
 
-  // Passing "true" to transition(THIRD, true) says "Transition to THIRD by REPLACING SECOND"
+// Passing "true" to transition(THIRD, true) says "Transition to THIRD by REPLACING SECOND"
   act(() => result.current.transition(THIRD, true));
   expect(result.current.mode).toBe(THIRD);
 
@@ -50,6 +53,7 @@ test("useVisualMode should replace the current mode", () => {
   expect(result.current.mode).toBe(FIRST);
 });
 
+//---------------------test for Transition back limit-----------------------//
 test("useVisualMode should not return to previous mode if already at initial", () => {
   const { result } = renderHook(() => useVisualMode(FIRST));
 
